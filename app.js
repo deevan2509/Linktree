@@ -109,7 +109,7 @@ function setupDonateModal() {
 }
 
 function pageUrl() {
-  return window.location.href.split("#")[0];
+  return "https://deevan2509.github.io/Linktree/";
 }
 
 function makeQr(element, size) {
