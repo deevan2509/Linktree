@@ -5,14 +5,14 @@ const links = [
     icon: "vote",
   },
   {
-    label: "Official JBMA website",
-    href: "https://www.jbma.my/",
-    icon: "globe",
-  },
-  {
     label: "Onagosham Feedback Form",
     href: "https://forms.gle/GnNWEyjkiXPnxgak8",
     icon: "form",
+  },
+  {
+    label: "Official JBMA website",
+    href: "https://www.jbma.my/",
+    icon: "globe",
   },
   {
     label: "Instagram",
