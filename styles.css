@@ -51,15 +51,15 @@ body {
 
 .hero {
   border-radius: 22px;
-  overflow: hidden;
-  background: #000;
-  box-shadow: 0 16px 40px rgba(80, 40, 0, 0.28);
+  overflow: visible;
+  background: transparent;
 }
 
 .logo {
   display: block;
   width: 100%;
   height: auto;
+  filter: drop-shadow(0 12px 22px rgba(80, 40, 0, 0.28));
 }
 
 .links {
