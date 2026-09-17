@@ -49,6 +49,31 @@
       </main>
     </div>
 
+    <div id="donate-modal" class="modal" hidden>
+      <div class="modal-backdrop" data-close-donate></div>
+      <div
+        class="modal-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="donate-title"
+      >
+        <h2 id="donate-title">Donate via DuitNow QR</h2>
+        <p class="modal-copy">Scan with your bank or e-wallet app.</p>
+        <p class="modal-copy">
+          Your generous donation helps fund our youth sports and activities for
+          the betterment of the upcoming younger generation.
+        </p>
+        <img
+          class="donate-qr"
+          src="assets/duitnow-qr.png"
+          alt="DuitNow QR for Persatuan Malayalee"
+        />
+        <button type="button" class="download-btn modal-close" data-close-donate>
+          Close
+        </button>
+      </div>
+    </div>
+
     <script src="vendor/qrcode.min.js"></script>
     <script src="app.js"></script>
   </body>
