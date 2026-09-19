@@ -10,6 +10,11 @@ const links = [
     icon: "form",
   },
   {
+    label: "Event Agenda",
+    icon: "agenda",
+    action: "agenda",
+  },
+  {
     label: "Become a JBMA member now",
     href: "https://docs.google.com/forms/d/e/1FAIpQLSde6cmM6uSGDmR_7ASiZIdMi22MDVBEMitMdB2GMsKe-VTb_g/viewform",
     icon: "people",
@@ -48,6 +53,8 @@ const icons = {
     '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm0 2c1.6 0 3.1.5 4.3 1.3-.7.6-1.6 1-2.6 1.2-.4-1.1-.9-2-1.7-2.5zm-2.1.4c.7.6 1.3 1.6 1.7 2.8-1.8.2-3.5.2-5.1 0C7.3 5.7 8.6 4.7 9.9 4.4zM6.1 8.4c2 .3 4.2.4 6.4.2.2 1.2.2 2.5 0 3.8-2.2-.2-4.4-.1-6.4.2A8 8 0 0 1 6.1 8.4zm.2 6.2c1.7-.3 3.5-.4 5.4-.2.3 1.3.3 2.6.1 3.8-1.4-.3-2.7-1.1-3.7-2.3-.7-1-.8-1.3-1.8-1.3zm5.8 3.6c.2-1.1.2-2.3 0-3.5 1.9.2 3.7.3 5.4.1-.5 1.7-1.7 3.1-3.3 3.8-.7.2-1.4.1-2.1-.4zm5.6-5.7c-1.8.2-3.7.1-5.6-.1.2-1.3.2-2.6 0-3.8 1.9.2 3.8.1 5.6-.2.4 1.2.5 2.6 0 4.1z"/></svg>',
   form:
     '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h8l4 4v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm7 1.5V8h3.5zM8 12h8v1.5H8zm0 3.5h8V17H8z"/></svg>',
+  agenda:
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h2v2h6V2h2v2h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h3V2zm13 8H4v10h16V10zm-3-4H7v2H4v2h16V6h-3z"/></svg>',
   people:
     '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 11a3 3 0 1 0-3-3 3 3 0 0 0 3 3zm-8 0a3 3 0 1 0-3-3 3 3 0 0 0 3 3zm0 2c-2.67 0-8 1.34-8 4v2h10v-2c0-1.48.81-2.61 2-3.42A12.4 12.4 0 0 0 8 13zm8 0c-.29 0-.62 0-.97.05A6.3 6.3 0 0 1 18 17v2h6v-2c0-2.66-5.33-4-8-4z"/></svg>',
   heart:
@@ -68,8 +75,8 @@ function renderLinks() {
           <span class="icon">${icons[link.icon]}</span>
           <span class="label">${link.label}</span>
       `;
-      if (link.action === "donate") {
-        return `<button type="button" class="link-btn" data-action="donate">${inner}</button>`;
+      if (link.action) {
+        return `<button type="button" class="link-btn" data-action="${link.action}">${inner}</button>`;
       }
       return `
         <a class="link-btn" href="${link.href}" target="_blank" rel="noopener noreferrer">
@@ -81,30 +88,37 @@ function renderLinks() {
 
   nav
     .querySelector('[data-action="donate"]')
-    ?.addEventListener("click", openDonateModal);
+    ?.addEventListener("click", () => openModal("donate-modal"));
+  nav
+    .querySelector('[data-action="agenda"]')
+    ?.addEventListener("click", () => openModal("agenda-modal"));
 }
 
-function openDonateModal() {
-  const modal = document.getElementById("donate-modal");
+function openModal(id) {
+  const modal = document.getElementById(id);
   modal.hidden = false;
   document.body.classList.add("modal-open");
   modal.querySelector(".modal-close")?.focus();
 }
 
-function closeDonateModal() {
-  const modal = document.getElementById("donate-modal");
+function closeModal(id) {
+  const modal = document.getElementById(id);
   modal.hidden = true;
-  document.body.classList.remove("modal-open");
-  document.querySelector('[data-action="donate"]')?.focus();
+  const anotherOpen = document.querySelector(".modal:not([hidden])");
+  if (!anotherOpen) document.body.classList.remove("modal-open");
+  document.querySelector(`[data-action="${id.replace("-modal", "")}"]`)?.focus();
 }
 
-function setupDonateModal() {
-  const modal = document.getElementById("donate-modal");
-  modal.querySelectorAll("[data-close-donate]").forEach((el) => {
-    el.addEventListener("click", closeDonateModal);
+function setupModals() {
+  document.querySelectorAll(".modal").forEach((modal) => {
+    modal.querySelectorAll("[data-close-modal]").forEach((el) => {
+      el.addEventListener("click", () => closeModal(modal.id));
+    });
   });
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && !modal.hidden) closeDonateModal();
+    if (event.key !== "Escape") return;
+    const open = document.querySelector(".modal:not([hidden])");
+    if (open) closeModal(open.id);
   });
 }
 
@@ -158,6 +172,6 @@ function downloadQr() {
 }
 
 renderLinks();
-setupDonateModal();
+setupModals();
 drawQr();
 document.getElementById("download-qr").addEventListener("click", downloadQr);

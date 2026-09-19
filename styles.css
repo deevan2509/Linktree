@@ -250,6 +250,18 @@ body.modal-open {
   border-radius: 16px;
 }
 
+.modal-card.agenda-card {
+  width: min(440px, 100%);
+}
+
+.agenda-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 auto 14px;
+  border-radius: 16px;
+}
+
 @media (max-width: 380px) {
   .label {
     font-size: 0.88rem;
